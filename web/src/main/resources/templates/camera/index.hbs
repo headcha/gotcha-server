@@ -106,7 +106,7 @@
 
 
                     <div id="comments" class="comments">
-                        <h2 class="title">전체댓글 {{camera.commentCount}} <button class="btn btn-sm btn-gray-transparent " id="js-comment-refresh" data-id="{{camera.id}}"><i class="fa fa-refresh"></i> </button></h2>
+                        <h2 class="title">전체댓글 <span id="comments-count">{{camera.commentCount}}</span> <button class="btn btn-sm btn-gray-transparent " id="js-comment-refresh" data-id="{{camera.id}}"><i class="fa fa-refresh"></i> </button></h2>
 
                         <!-- comments form start -->
                         <!-- ================ -->
@@ -126,23 +126,14 @@
                         <!-- comments form end -->
 
                         <div id="comment-area">
-                            {{#each camera.comments}}
-                                <!-- comment start -->
-                                {{> camera/template/comment}}
-                                <!-- comment end -->
-                            {{/each}}
+
+                            {{> camera/template/comment-base}}
                         </div>
 
-                        <div class="comment clearfix" id="comment-more" style="cursor: pointer;">
-                            <header>
-                                <div class="comment-meta"></div>
-                            </header>
-                            <div class="comment-content">
-                                <div class="comment-body text-center ">
-                                    <p class="comment-text">더보기 <i class="fa fa-chevron-down"></i></p>
-                                </div>
-                            </div>
+                        <div id="pagination-area">
+                            {{> camera/template/read-more}}
                         </div>
+
                     </div>
                 </div>
                 <!-- main end -->
@@ -388,8 +379,11 @@
 <!-- ================ -->
 {{#partial "script"}}
 
+    <script type="text/javascript">{{precompile "camera/template/comment-base"}}</script>
     <script type="text/javascript">{{precompile "camera/template/comment"}}</script>
     <script type="text/javascript">{{precompile "camera/template/reply"}}</script>
+    <script type="text/javascript">{{precompile "camera/template/read-more"}}</script>
+
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=xWkLu4_X012vIBRy07ZD"></script>
 
     <script>
@@ -423,13 +417,14 @@
 
                 var commentId = $this.parents('.js-comment-item').attr('data-id');
                 AjaxHandler.delete('/api/v1/members/cameras/{{camera.id}}/comments/' + commentId + '/reply/' + id , function () {
-                    $this.parents('.reply-item').find('.reply-text').val('작성자가 삭제한 댓글 입니다.');
+                    $this.parents('.reply-item').find('.reply-text').text('작성자가 삭제한 댓글 입니다.');
                 });
             }
         });
 
 
         var replyTemplate = Handlebars.templates['camera/template/reply'];
+
         $(document).on('submit' , '.reply-form' , function(event) {
             if (event.isDefaultPrevented() == false) {
                 var $this = $(this);
@@ -455,15 +450,12 @@
         });
 
 
-
-
         $('#commentForm').validator().on('submit', function (event) {
 
             if (event.isDefaultPrevented() == false) {
                 var $this = $(this);
                 FormAjaxHandler.sendResult($this, function (result) {
-                    addComment(result);
-
+                    $('#js-comment-refresh').trigger('click');
                     $this.find('#comment-text').val('');
                 }, function (request) {
 
@@ -475,57 +467,88 @@
             return false;
         });
 
+        var $commentArea = $('#comment-area');
+
         $('#js-comment-refresh').on('click' , function () {
 
+            AjaxHandler.getResult('/api/v1/cameras/{{camera.id}}/comments?page=1&contentSize=20' , function (result) {
+
+                $commentArea.html('');
+                $('#comments-count').text(result.totalCount);
+                appendComment(result.contents);
+                updatePageNavi(result);
+            });
+
+        });
+
+
+
+        $(document).on('click' , '#comment-more' , function () {
+
             var $this = $(this);
-            var id = $this.attr('data-id');
+            var page = parseInt($this.attr('data-page')) + 1;
+            var isLast = $this.attr('data-last');
 
-            AjaxHandler.getResult('/api/v1/cameras/' + id + '/comments?page=1&contentSize=10' , function (result) {
+            if (isLast == 'true') {
+                alert("마지막 페이지 입니다.");
+                return;
+            }
 
-                var $commentArea = $('#comment-area');
+            AjaxHandler.getResult('/api/v1/cameras/{{camera.id}}/comments?page='+page+'&contentSize=20' , function (result) {
 
-                $commentArea.html('');
-
-                $.each(result.contents , function (index , comment) {
-
-                    addComment(comment);
-                });
-
+                appendComment(result.contents);
+                updatePageNavi(result);
             });
-
         });
 
-        $('#comment-more').on('click' , function () {
+        var paginationTemplate = Handlebars.templates['camera/template/read-more'];
+        var $paginationArea = $('#pagination-area');
 
-            AjaxHandler.getResult('/api/v1/cameras/' + id + '/comments?page=1&contentSize=10' , function (result) {
+        function updatePageNavi(page) {
+            var data = {
+                camera : {
+                    comments : page
+                }
+            }
 
-                var $commentArea = $('#comment-area');
+            var $templateHtml = $(paginationTemplate(data));
+            $paginationArea.html($templateHtml);
+        }
 
-                $commentArea.html('');
+        var commentBaseTemplate = Handlebars.templates['camera/template/comment-base'];
 
-                $.each(result.contents , function (index , comment) {
+        function appendComment(comments) {
 
-                    addComment(comment);
-                });
+            for (var i = 0; i < comments.length; i++) {
+                var comment = comments[i];
 
-            });
+                comment.loggedMember = {
+                    loginId: '{{loggedMember.loginId}}'
+                };
 
-        });
+                for (var j = 0; j < comment.replies.length; j++) {
+                    var reply = comment.replies[j];
 
-        var commentTemplate = Handlebars.templates['camera/template/comment'];
-        function addComment(comment) {
-            var $commentArea = $('#comment-area');
-            comment.loggedMember = {
-                loginId: '{{loggedMember.loginId}}'
-            };
+                    reply.loggedMember = {
+                        loginId: '{{loggedMember.loginId}}'
+                    };
+                }
+            }
 
-            var $templateHtml = $(commentTemplate(comment));
+            var data = {
+                camera : {
+                    comments : {
+                        contents :  comments
+                    }
+                }
+            }
+
+            var $templateHtml = $(commentBaseTemplate(data));
 
             $templateHtml.find('.reply-form').validator();
 
-            $commentArea.prepend($templateHtml);
+            $commentArea.append($templateHtml);
         }
-
 
         $(document).on('click' , '.js-reply' , function () {
             var id = $(this).attr('data-id');
