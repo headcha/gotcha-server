@@ -1,0 +1,213 @@
+{{#partial "header"}}
+
+    <style>
+        #map {
+            width: 100%;
+        }
+        .counter-text {
+            display: block;
+            line-height: 1;
+        }
+    </style>
+
+{{/partial}}
+{{#partial "content"}}
+
+    <section class="container-fluid">
+        <div class="row">
+            <div id="map"></div>
+        </div>
+
+    </section>
+{{/partial}}
+<!-- footer top end -->
+<!-- footer start (Add "dark" class to #footer in order to enable dark footer) -->
+<!-- ================ -->
+{{#partial "script"}}
+    <script type="text/javascript">{{precompile "home/template/camera"}}</script>
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=xWkLu4_X012vIBRy07ZD"></script>
+
+    <script>
+
+
+        var cameraArray = new Array();
+        var markerArray = new Array();
+        initMap();
+
+
+        function initMap() {
+
+            var defaultLocation = {
+                latitude: 37.3595704
+                , longitude: 127.105399
+            };
+            resizeMapToFull();
+            var map = randerNaverMap(defaultLocation);
+            moveToMyLocation(map);
+        }
+
+        function moveToMyLocation(map) {
+            if (navigator.geolocation) { // GPS를 지원하면
+                navigator.geolocation.getCurrentPosition(function (position) {
+
+                    var myLocation = new naver.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                    map.setCenter(myLocation);
+                    var bounds = map.getBounds();
+                    map.panToBounds(bounds);
+
+                    map.panBy(new naver.maps.Point(15, -30));
+
+                    new naver.maps.Marker({
+                        position: myLocation,
+                        map: map,
+                        animation: naver.maps.Animation.BOUNCE
+                    });
+
+                }, function (error) {
+                    console.error(error);
+
+                }, {
+                    enableHighAccuracy: true,
+                    maximumAge: 10000,
+                    timeout: Infinity
+                });
+            } else {
+                alert('GPS를 지원하지 않습니다');
+
+            }
+        }
+
+        function resizeMapToFull() {
+            var headerHeight = $('.header-container').height();
+
+            var windowHeight = $(window).innerHeight();
+
+
+            $('#map').height(windowHeight - headerHeight);
+        }
+
+        function randerNaverMap(centerLocation) {
+
+
+
+            var map = new naver.maps.Map('map', {
+                center: new naver.maps.LatLng(centerLocation.latitude, centerLocation.longitude),
+                zoom: 10
+            });
+
+            naver.maps.Event.addListener(map, 'idle', function () {
+                var centerPosition = map.getCenter();
+                appendMarker(map, {longitude: centerPosition.x, latitude: centerPosition.y}, function () {
+                    updateMarkers(map, markerArray);
+                });
+            });
+
+            return map;
+        }
+
+        function appendMarker(map, centerLocation, fnCallback) {
+
+            var param = {
+                longitude: centerLocation.longitude
+                , latitude: centerLocation.latitude
+                , boundary: (14 - map.getZoom()) * 1000 * 5
+            }
+
+
+            AjaxHandler.getResult('/api/v1/cameras/search?' + $.param(param), function (result) {
+                addCameraMarker(map, result);
+                if (fnCallback)
+                    fnCallback();
+            });
+        }
+
+        var cameraTemplate = Handlebars.templates['home/template/camera'];
+
+        function addCameraMarker(map, cameras) {
+
+            for (var i = 0; i < cameras.length; i++) {
+
+                var camera = cameras[i];
+
+                var exist = cameraArray.find(function (element) {
+                    return element.id === camera.id;
+                });
+
+                if (exist) {
+                    continue;
+                }
+
+
+                var marker = new naver.maps.Marker({
+                    position: new naver.maps.LatLng(camera.latitude, camera.longitude),
+                    map: map
+                });
+
+                camera.imageHost = '{{imageHost}}';
+                var cameraHtml = cameraTemplate(camera);
+
+                var infoWindow = new naver.maps.InfoWindow({
+                    content: cameraHtml,
+                    maxWidth: 300,
+                    backgroundColor: "#eee",
+                    borderColor: "#09afdf",
+                    borderWidth: 3,
+                    anchorSize: new naver.maps.Size(30, 30),
+                    anchorSkew: true,
+                    anchorColor: "#eee",
+                    pixelOffset: new naver.maps.Point(20, -20)
+                });
+
+
+                naver.maps.Event.addListener(marker, 'click', getClickHandler(map, marker, infoWindow));
+                cameraArray.push(camera);
+                markerArray.push(marker);
+            }
+        }
+
+
+
+        // 해당 마커의 인덱스를 seq라는 클로저 변수로 저장하는 이벤트 핸들러를 반환합니다.
+        function getClickHandler(map, marker, infoWindow) {
+            return function (e) {
+                if (infoWindow.getMap()) {
+                    infoWindow.close();
+                } else {
+                    infoWindow.open(map, marker);
+                }
+            }
+        }
+
+
+        function updateMarkers(map, markers) {
+
+            var mapBounds = map.getBounds();
+            var marker, position;
+
+            for (var i = 0; i < markers.length; i++) {
+
+                marker = markers[i];
+                position = marker.getPosition();
+
+                if (mapBounds.hasLatLng(position)) {
+                    showMarker(map, marker);
+                } else {
+                    hideMarker(map, marker);
+                }
+            }
+        }
+
+        function showMarker(map, marker) {
+
+            if (marker.setMap()) return;
+            marker.setMap(map);
+        }
+
+        function hideMarker(map, marker) {
+
+            if (!marker.setMap()) return;
+            marker.setMap(null);
+        }
+    </script>
+{{/partial}}
+{{> layout/simple/base}}

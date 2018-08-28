@@ -1,0 +1,61 @@
+<div class="image-box text-center style-2">
+    <div class="ph-20 pt-3">
+        <a href="{{imageHost}}{{imageUrl}}" target="_blank"><img src="{{imageHost}}w_400,h_300,c_fill/{{imageUrl}}" alt="" style="margin: 0 auto;"></a>
+    </div>
+    <div class="separator"></div>
+    <div class="body">
+        <article class="blogpost full">
+            <header>
+                <div class="post-info text-left">
+                    <span class="post-date">
+                      <i class="fa fa-calendar-o pr-1"></i>
+                      <span class="day">{{dateFormat createdAt format='yyyy-mm-dd'}}</span>
+                    </span>
+                    <span class="comments"><i class="fa fa-comments-o pl-1 pr-1"></i> <a href="#">{{commentCount}} comments</a></span>
+                    <span class="submitted"><i class="fa fa-user pr-1 pl-1"></i> by <a href="#">{{writer.loginId}}</a></span>
+
+                </div>
+            </header>
+
+            <div class="blogpost-content">
+                <p class="">{{message}}</p>
+            </div>
+        </article>
+
+        <div class="container">
+            <div class="row">
+
+                <div class="col-6  text-center">
+                    <div class="feature-box text-danger margin--bottom-clear">
+                        <span class="icon without-bg "><i class="fa fa-camera"></i></span>
+                        <span class="counter-text">{{rightCount}}</span>
+                    </div>
+                </div>
+                <div class="col-6  text-center">
+                    <div class="feature-box text-success margin--bottom-clear">
+                        <span class="icon without-bg "><i class="fa fa-smile-o"></i></span>
+                        <span class="counter-text">{{wrongCount}}</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="separator"></div>
+        {{#if tags}}
+            <div class="tags-cloud">
+                {{#each tags}}
+                    <div class="tag">
+                        <a href="#">#{{this}}</a>
+                    </div>
+                {{/each}}
+            </div>
+
+        {{/if}}
+
+
+        <a href="/cameras/{{id}}" target="_blank" class="btn btn-info">자세히 <i class="fa fa-arrow-right pl-10"></i></a>
+    </div>
+</div>
+
+

@@ -1,0 +1,60 @@
+
+<div class="header-container">
+    <div class="header-top dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-3 col-sm-6 col-lg-9">
+                    <!-- header-top-first start -->
+                    <!-- ================ -->
+
+                    <!-- header-top-first end -->
+                </div>
+                <div class="col-9 col-sm-6 col-lg-3">
+
+                    <!-- header-top-second start -->
+                    <!-- ================ -->
+                    <div id="header-top-second" class="clearfix">
+
+                        <!-- header top dropdowns start -->
+                        <!-- ================ -->
+                        <div class="header-top-dropdown text-right">
+                            {{#if loggedMember.logged}}
+                                <div class="btn-group">
+                                    <a href="/api/v1/account/logout" class="btn btn-default btn-sm"><i class="fa fa-sign-out pr-2"></i> 로그아웃</a>
+                                </div>
+                            {{else}}
+                                <div class="btn-group">
+                                    <a href="/account/signup" class="btn btn-default btn-sm"><i class="fa fa-user pr-2"></i> 회원가입</a>
+                                </div>
+                                <div class="btn-group">
+                                    <button id="header-top-drop-2" type="button" class="btn dropdown-toggle btn-default btn-sm dropdown-toggle--no-caret" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lock pr-2"></i> Login</button>
+                                    <ul class="dropdown-menu dropdown-menu-right dropdown-animation" aria-labelledby="header-top-drop-2" x-placement="bottom-end" style="position: absolute; transform: translate3d(-200px, 29px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                        <li>
+                                            <form class="login-form margin-clear" method="post" action="/api/v1/account/signin">
+                                                <div class="form-group has-feedback">
+                                                    <label class="control-label">ID</label>
+                                                    <input type="email" name="id" class="form-control" placeholder="" required>
+                                                    <i class="fa fa-user form-control-feedback"></i>
+                                                </div>
+                                                <div class="form-group has-feedback">
+                                                    <label class="control-label">Password</label>
+                                                    <input type="password" name="password" class="form-control" placeholder="" required>
+                                                    <i class="fa fa-lock form-control-feedback"></i>
+                                                </div>
+                                                <button type="submit" class="btn btn-gray btn-sm">로그인</button>
+
+
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+                            {{/if}}
+                        </div>
+                        <!--  header top dropdowns end -->
+                    </div>
+                    <!-- header-top-second end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

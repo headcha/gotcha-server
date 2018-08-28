@@ -1,0 +1,33 @@
+<div class="comment clearfix">
+
+    {{#if removed}}
+        <div class="{{#equals writer.loginId loggedMember.loginId}} my-comment {{/equals}} reply-item">
+            <header>
+                <div class="comment-meta"><strong>{{writer.loginId}} | {{dateFormat createdAt format='yyyy-MM-dd HH:mm'}}</strong>
+                </div>
+            </header>
+            <div class="comment-content">
+                <div class="comment-body clearfix">
+                    <p class="reply-text">작성자가 삭제한 댓글 입니다. </p>
+                </div>
+            </div>
+        </div>
+    {{else}}
+        <div class="{{#equals writer.loginId loggedMember.loginId}} my-comment {{/equals}} reply-item">
+            <header>
+                {{#equals writer.loginId loggedMember.loginId}}
+                    <button class="btn btn-sm btn-gray-transparent  pull-right js-reply-remove" data-comment-id="{{commentId}}" data-id="{{id}}"><i class="fa fa-close"></i>삭제 {{replycount}}</button>
+                {{/equals}}
+                <div class="comment-meta"><strong>{{writer.loginId}} | {{dateFormat createdAt format='yyyy-MM-dd HH:mm'}}</strong>
+                </div>
+            </header>
+            <div class="comment-content">
+                <div class="comment-body clearfix">
+                    <p class="reply-text">{{messages}} </p>
+                </div>
+            </div>
+        </div>
+    {{/if}}
+
+
+</div>

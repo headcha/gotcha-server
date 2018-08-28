@@ -1,0 +1,546 @@
+{{#partial "header"}}
+
+    <style>
+        .my-comment {
+            background-color: #fcfff9;
+        }
+
+        .comment-content {
+            margin-bottom: 0;
+        }
+    </style>
+
+{{/partial}}
+{{#partial "content"}}
+
+    <!-- main-container start -->
+    <!-- ================ -->
+    <section class="main-container">
+
+        <div class="container">
+            <div class="row">
+
+                <!-- main start -->
+                <!-- ================ -->
+                <div class="main col-lg-8">
+
+                    <!-- page-title start -->
+                    <!-- ================ -->
+
+                    <!-- page-title end -->
+
+                    <!-- blogpost start -->
+                    <!-- ================ -->
+                    <article class="blogpost full">
+
+                        <div class="blogpost-content">
+                            <div id="carousel-blog-post" class="carousel slide mb-5" data-ride="carousel">
+                                <!-- Wrapper for slides -->
+                                <div class="carousel-inner" role="listbox">
+                                    <div class="carousel-item active">
+                                        <div class="overlay-container">
+                                            <img src="{{imageHost}}w_600,h_400,c_fill/{{camera.imageUrl}}" alt="">
+                                            <a class="overlay-link popup-img" href="{{imageHost}}/{{camera.imageUrl}}"><i class="fa fa-search-plus"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="post-info mb-4">
+                                <span class="post-date">
+                                  <i class="fa fa-calendar-o pr-1"></i>
+                                  <span class="day">{{dateFormat camera.createdAt format='yyyy-MM-dd HH:mm'}}</span>
+                                </span>
+                                    <span class="submitted"><i class="fa fa-user pr-1 pl-1"></i> by <a href="#">{{camera.writer.loginId}}</a></span>
+                                    <span class="comments"><i class="fa fa-comments-o pl-1 pr-1"></i> <a href="#">{{camera.commentCount}} comments</a></span>
+                                </div>
+                            </div>
+
+                            <p class="large">{{camera.message}}</p>
+
+                        </div>
+
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-2"></div>
+                                <div class="col-4  text-center">
+                                    <div class="feature-box text-danger" id="js-right" style="cursor: pointer;">
+                                        <span class="icon without-bg "><i class="fa fa-camera"></i></span>
+                                        <h3 class="text-danger">몰카에요</h3>
+                                        <span class="counter">{{camera.rightCount}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-4  text-center">
+                                    <div class="feature-box text-success" id="js-wrong" style="cursor: pointer;">
+                                        <span class="icon without-bg "><i class="fa fa-smile-o"></i></span>
+                                        <h3 class="text-success">아니에요</h3>
+                                        <span class="counter">{{camera.wrongCount}}</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <footer class="clearfix">
+                            {{#if camera.tags}}
+                                <div class="tags-cloud">
+                                    {{#each camera.tags}}
+                                        <div class="tag">
+                                            <a href="#">#{{this}}</a>
+                                        </div>
+                                    {{/each}}
+                                </div>
+
+                            {{/if}}
+
+                            <div class="link pull-right">
+                                <ul class="social-links circle small colored clearfix margin-clear text-right animated-effect-1">
+                                    <li class="facebook"><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                </ul>
+                            </div>
+                        </footer>
+                    </article>
+                    <!-- blogpost end -->
+
+
+
+                    <div id="comments" class="comments">
+                        <h2 class="title">전체댓글 {{camera.commentCount}} <button class="btn btn-sm btn-gray-transparent " id="js-comment-refresh" data-id="{{camera.id}}"><i class="fa fa-refresh"></i> </button></h2>
+
+                        <!-- comments form start -->
+                        <!-- ================ -->
+                        <div class="comments-form">
+                            <form id="commentForm" action="/api/v1/members/cameras/{{camera.id}}/comments" method="post">
+                                <div class="form-group has-feedback">
+                                    <textarea class="form-control" name="message" id="comment-text" rows="8" placeholder="비방은 고소먹음" required></textarea>
+
+                                    <div class="help-block with-errors text-danger"></div>
+                                </div>
+                                <div class="text-right">
+                                    <input type="submit" value="등록" class="btn btn-default">
+                                </div>
+                            </form>
+                            <div class="separator"></div>
+                        </div>
+                        <!-- comments form end -->
+
+                        <div id="comment-area">
+                            {{#each camera.comments}}
+                                <!-- comment start -->
+                                {{> camera/template/comment}}
+                                <!-- comment end -->
+                            {{/each}}
+                        </div>
+
+                        <div class="comment clearfix" id="comment-more" style="cursor: pointer;">
+                            <header>
+                                <div class="comment-meta"></div>
+                            </header>
+                            <div class="comment-content">
+                                <div class="comment-body text-center ">
+                                    <p class="comment-text">더보기 <i class="fa fa-chevron-down"></i></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- main end -->
+
+                <!-- sidebar start -->
+                <!-- ================ -->
+                <aside class="col-lg-4 col-xl-3 ml-xl-auto">
+                    <div class="sidebar">
+                        <div class="block clearfix">
+                            <h3 class="title">Sidebar menu</h3>
+                            <div class="separator-2"></div>
+                            <nav>
+                                <ul class="nav flex-column">
+                                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                                    <li class="nav-item"><a class="nav-link active" href="blog-large-image-right-sidebar.html">Blog</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="portfolio-grid-2-3-col.html">Portfolio</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="page-about.html">About</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="page-contact.html">Contact</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="block clearfix">
+                            <h3 class="title">Featured Project</h3>
+                            <div class="separator-2"></div>
+                            <div id="carousel-portfolio-sidebar" class="carousel slide" data-ride="carousel">
+                                <!-- Indicators -->
+                                <ol class="carousel-indicators">
+                                    <li data-target="#carousel-portfolio-sidebar" data-slide-to="0" class="active"></li>
+                                    <li data-target="#carousel-portfolio-sidebar" data-slide-to="1"></li>
+                                    <li data-target="#carousel-portfolio-sidebar" data-slide-to="2"></li>
+                                </ol>
+
+                                <!-- Wrapper for slides -->
+                                <div class="carousel-inner" role="listbox">
+                                    <div class="carousel-item active">
+                                        <div class="image-box shadow bordered text-center mb-20">
+                                            <div class="overlay-container">
+                                                <img src="images/portfolio-4.jpg" alt="">
+                                                <a href="portfolio-item.html" class="overlay-link">
+                                                    <i class="fa fa-link"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <div class="image-box shadow bordered text-center mb-20">
+                                            <div class="overlay-container">
+                                                <img src="images/portfolio-1-2.jpg" alt="">
+                                                <a href="portfolio-item.html" class="overlay-link">
+                                                    <i class="fa fa-link"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <div class="image-box shadow bordered text-center mb-20">
+                                            <div class="overlay-container">
+                                                <img src="images/portfolio-1-3.jpg" alt="">
+                                                <a href="portfolio-item.html" class="overlay-link">
+                                                    <i class="fa fa-link"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="block clearfix">
+                            <h3 class="title">Latest tweets</h3>
+                            <div class="separator-2"></div>
+                            <ul class="tweets">
+                                <li>
+                                    <i class="fa fa-twitter"></i>
+                                    <p><a href="#">@lorem</a> ipsum dolor sit amet, consectetur adipisicing elit. Mollitia, aliquid, et molestias nesciunt <a href="#">http://b.sa/adsfasfasd</a>.</p><span>16 hours ago</span>
+                                </li>
+                                <li>
+                                    <i class="fa fa-twitter"></i>
+                                    <p><a href="#">@lorem</a> ipsum dolor sit amet, consectetur adipisicing elit. Mollitia, aliquid, et molestias nesciunt <a href="#">http://b.sa/adsfasfasd</a>.</p><span>16 hours ago</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="block clearfix">
+                            <h3 class="title">Popular Tags</h3>
+                            <div class="separator-2"></div>
+                            <div class="tags-cloud">
+                                <div class="tag">
+                                    <a href="#">energy</a>
+                                </div>
+                                <div class="tag">
+                                    <a href="#">business</a>
+                                </div>
+                                <div class="tag">
+                                    <a href="#">food</a>
+                                </div>
+                                <div class="tag">
+                                    <a href="#">fashion</a>
+                                </div>
+                                <div class="tag">
+                                    <a href="#">finance</a>
+                                </div>
+                                <div class="tag">
+                                    <a href="#">culture</a>
+                                </div>
+                                <div class="tag">
+                                    <a href="#">health</a>
+                                </div>
+                                <div class="tag">
+                                    <a href="#">sports</a>
+                                </div>
+                                <div class="tag">
+                                    <a href="#">life style</a>
+                                </div>
+                                <div class="tag">
+                                    <a href="#">books</a>
+                                </div>
+                                <div class="tag">
+                                    <a href="#">lorem</a>
+                                </div>
+                                <div class="tag">
+                                    <a href="#">ipsum</a>
+                                </div>
+                                <div class="tag">
+                                    <a href="#">responsive</a>
+                                </div>
+                                <div class="tag">
+                                    <a href="#">style</a>
+                                </div>
+                                <div class="tag">
+                                    <a href="#">finance</a>
+                                </div>
+                                <div class="tag">
+                                    <a href="#">sports</a>
+                                </div>
+                                <div class="tag">
+                                    <a href="#">technology</a>
+                                </div>
+                                <div class="tag">
+                                    <a href="#">support</a>
+                                </div>
+                                <div class="tag">
+                                    <a href="#">life style</a>
+                                </div>
+                                <div class="tag">
+                                    <a href="#">books</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="block clearfix">
+                            <h3 class="title">Testimonial</h3>
+                            <div class="separator-2"></div>
+                            <blockquote class="margin-clear">
+                                <p>Reprehenderit, nihil magni odit ducimus, ab animi eaque vel excepturi, incidunt.</p>
+                                <footer><cite title="Source Title">Someone Famous </cite></footer>
+                            </blockquote>
+                            <blockquote class="margin-clear">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos dolorem.</p>
+                                <footer><cite title="Source Title">Steve Doe </cite></footer>
+                            </blockquote>
+                        </div>
+                        <div class="block clearfix">
+                            <h3 class="title">Latest News</h3>
+                            <div class="separator-2"></div>
+                            <div class="media margin-clear">
+                                <div class="d-flex pr-2">
+                                    <div class="overlay-container">
+                                        <img class="media-object" src="images/blog-thumb-1.jpg" alt="blog-thumb">
+                                        <a href="blog-post.html" class="overlay-link small"><i class="fa fa-link"></i></a>
+                                    </div>
+                                </div>
+                                <div class="media-body">
+                                    <h6 class="media-heading"><a href="blog-post.html">Lorem ipsum dolor sit amet...</a></h6>
+                                    <p class="small margin-clear"><i class="fa fa-calendar pr-10"></i>Mar 23, 2017</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="media margin-clear">
+                                <div class="d-flex pr-2">
+                                    <div class="overlay-container">
+                                        <img class="media-object" src="images/blog-thumb-2.jpg" alt="blog-thumb">
+                                        <a href="blog-post.html" class="overlay-link small"><i class="fa fa-link"></i></a>
+                                    </div>
+                                </div>
+                                <div class="media-body">
+                                    <h6 class="media-heading"><a href="blog-post.html">Lorem ipsum dolor sit amet...</a></h6>
+                                    <p class="small margin-clear"><i class="fa fa-calendar pr-10"></i>Mar 22, 2017</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="media margin-clear">
+                                <div class="d-flex pr-2">
+                                    <div class="overlay-container">
+                                        <img class="media-object" src="images/blog-thumb-3.jpg" alt="blog-thumb">
+                                        <a href="blog-post.html" class="overlay-link small"><i class="fa fa-link"></i></a>
+                                    </div>
+                                </div>
+                                <div class="media-body">
+                                    <h6 class="media-heading"><a href="blog-post.html">Lorem ipsum dolor sit amet...</a></h6>
+                                    <p class="small margin-clear"><i class="fa fa-calendar pr-10"></i>Mar 21, 2017</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="media margin-clear">
+                                <div class="d-flex pr-2">
+                                    <div class="overlay-container">
+                                        <img class="media-object" src="images/blog-thumb-4.jpg" alt="blog-thumb">
+                                        <a href="blog-post.html" class="overlay-link small"><i class="fa fa-link"></i></a>
+                                    </div>
+                                </div>
+                                <div class="media-body">
+                                    <h6 class="media-heading"><a href="blog-post.html">Lorem ipsum dolor sit amet...</a></h6>
+                                    <p class="small margin-clear"><i class="fa fa-calendar pr-10"></i>Mar 21, 2017</p>
+                                </div>
+                            </div>
+                            <div class="text-right space-top">
+                                <a href="blog-large-image-right-sidebar.html" class="link-dark"><i class="fa fa-plus-circle pl-1 pr-1"></i>More</a>
+                            </div>
+                        </div>
+                        <div class="block clearfix">
+                            <h3 class="title">Text Sample</h3>
+                            <div class="separator-2"></div>
+                            <p class="margin-clear">Debitis eaque officia illo impedit ipsa earum <a href="#">cupiditate repellendus</a> corrupti nisi nemo, perspiciatis optio harum, hic laudantium nulla maiores rem sit magni neque nihil sequi temporibus. Laboriosam ipsum reiciendis iste, nobis obcaecati, a autem voluptatum odio? Recusandae officiis dicta quod qui eligendi.</p>
+                        </div>
+                        <div class="block clearfix">
+                            <form role="search">
+                                <div class="form-group has-feedback">
+                                    <input type="text" class="form-control" placeholder="Search">
+                                    <i class="fa fa-search form-control-feedback"></i>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </aside>
+                <!-- sidebar end -->
+
+            </div>
+        </div>
+    </section>
+    <!-- main-container end -->
+
+{{/partial}}
+<!-- footer top end -->
+<!-- footer start (Add "dark" class to #footer in order to enable dark footer) -->
+<!-- ================ -->
+{{#partial "script"}}
+
+    <script type="text/javascript">{{precompile "camera/template/comment"}}</script>
+    <script type="text/javascript">{{precompile "camera/template/reply"}}</script>
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=xWkLu4_X012vIBRy07ZD"></script>
+
+    <script>
+
+        $(document).on('click' , '.js-comment-remove' , function () {
+            var fnConfirm = confirm('게시글을 삭제 하시겠습니까?');
+
+            if (fnConfirm) {
+
+                var $this = $(this);
+                var id =$this.attr('data-id');
+
+                AjaxHandler.delete('/api/v1/members/cameras/{{camera.id}}/comments/' + id , function () {
+
+                    var $commentItem = $this.parents('.js-comment-item');
+
+                    $commentItem.find('.js-comment-remove').remove();
+                    $commentItem.find('.comment-text').text('작성자가 삭제한 댓글 입니다.');
+                    $commentItem.find('.js-comment-form').remove();
+                });
+            }
+        });
+
+        $(document).on('click' , '.js-reply-remove' , function () {
+            var fnConfirm = confirm('게시글을 삭제 하시겠습니까?');
+
+            if (fnConfirm) {
+
+                var $this = $(this);
+                var id =$this.attr('data-id');
+
+                var commentId = $this.parents('.js-comment-item').attr('data-id');
+                AjaxHandler.delete('/api/v1/members/cameras/{{camera.id}}/comments/' + commentId + '/reply/' + id , function () {
+                    $this.parents('.reply-item').find('.reply-text').val('작성자가 삭제한 댓글 입니다.');
+                });
+            }
+        });
+
+
+        var replyTemplate = Handlebars.templates['camera/template/reply'];
+        $(document).on('submit' , '.reply-form' , function(event) {
+            if (event.isDefaultPrevented() == false) {
+                var $this = $(this);
+                FormAjaxHandler.sendResult($this, function (result) {
+                    result.loggedMember = {
+                        loginId : '{{loggedMember.loginId}}'
+                    };
+
+
+                    var $templateHtml = $(replyTemplate(result));
+
+                    var id = $this.attr('data-id');
+                    $('.reply-area-' + id).find('.reply').prepend($templateHtml);
+                    $this.find('textarea').val('');
+                }, function (request) {
+
+                    if (request.responseJSON.code === 401) {
+                        alert(request.responseJSON.message);
+                    }
+                });
+            }
+            return false;
+        });
+
+
+
+
+        $('#commentForm').validator().on('submit', function (event) {
+
+            if (event.isDefaultPrevented() == false) {
+                var $this = $(this);
+                FormAjaxHandler.sendResult($this, function (result) {
+                    addComment(result);
+
+                    $this.find('#comment-text').val('');
+                }, function (request) {
+
+                    if (request.responseJSON.code === 401) {
+                        alert(request.responseJSON.message);
+                    }
+                });
+            }
+            return false;
+        });
+
+        $('#js-comment-refresh').on('click' , function () {
+
+            var $this = $(this);
+            var id = $this.attr('data-id');
+
+            AjaxHandler.getResult('/api/v1/cameras/' + id + '/comments?page=1&contentSize=10' , function (result) {
+
+                var $commentArea = $('#comment-area');
+
+                $commentArea.html('');
+
+                $.each(result.contents , function (index , comment) {
+
+                    addComment(comment);
+                });
+
+            });
+
+        });
+
+        $('#comment-more').on('click' , function () {
+
+            AjaxHandler.getResult('/api/v1/cameras/' + id + '/comments?page=1&contentSize=10' , function (result) {
+
+                var $commentArea = $('#comment-area');
+
+                $commentArea.html('');
+
+                $.each(result.contents , function (index , comment) {
+
+                    addComment(comment);
+                });
+
+            });
+
+        });
+
+        var commentTemplate = Handlebars.templates['camera/template/comment'];
+        function addComment(comment) {
+            var $commentArea = $('#comment-area');
+            comment.loggedMember = {
+                loginId: '{{loggedMember.loginId}}'
+            };
+
+            var $templateHtml = $(commentTemplate(comment));
+
+            $templateHtml.find('.reply-form').validator();
+
+            $commentArea.prepend($templateHtml);
+        }
+
+
+        $(document).on('click' , '.js-reply' , function () {
+            var id = $(this).attr('data-id');
+
+            var $reply = $('.reply-area-' + id);
+
+            if ($reply.is(':visible')) {
+                $('.reply-area-' + id).hide();
+            } else {
+                $('.reply-area-' + id).show();
+            }
+        });
+
+
+
+    </script>
+{{/partial}}
+{{> layout/base}}

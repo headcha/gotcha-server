@@ -1,0 +1,65 @@
+{{#partial "content"}}
+    <!-- main-container start -->
+    <!-- ================ -->
+    <div class="main-container dark-translucent-bg" style="background-image:url('/display/lib/bootstrap/html/template/images/background-img-6.jpg');">
+        <div class="container">
+            <div class="row">
+                <!-- main start -->
+                <!-- ================ -->
+                <div class="main object-non-visible" data-animation-effect="fadeInUpSmall" data-effect-delay="100">
+                    <div class="form-block center-block p-30 light-gray-bg border-clear">
+                        <h2 class="title text-center">ID 찾기</h2>
+                        <form class="form-horizontal" id="searchForm" role="form" action="/api/account/search/id"
+                              method="post">
+                            <div class="form-group has-feedback">
+                                <div class="col-sm-offset-1 col-sm-4">
+                                    <input type="email" class="form-control" id="email" name="email"
+                                           placeholder="e-mail" required>
+                                    <i class="fa fa-pencil form-control-feedback"></i>
+                                </div>
+                                <div class="col-sm-6">
+                                    <input type="tel" class="form-control" id="name" name="name" placeholder="이름"
+                                           required>
+                                    <i class="fa fa-phone form-control-feedback"></i>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-1 col-sm-10">
+                                    <button class="btn btn-group btn-default btn-animated col-sm-12">찾기 <i
+                                            class="fa fa-check"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- main end -->
+            </div>
+        </div>
+    </div>
+{{/partial}}
+{{#partial "script"}}
+
+
+    <script type="text/javascript">
+        $('#searchForm').validator().on('submit', function (event) {
+
+            if (event.isDefaultPrevented() == false) {
+                FormAjaxHandler.sendResult($(this), function (result) {
+                    console.log(result);
+                    if (result.loginId === null) {
+                        alert("아이디를 찾을 수 없습니다.");
+                    } else if (result.loginId) {
+                        alert("아이디는 " + result.loginId + "입니다.");
+                    }
+                }, function (response, status, error) {
+                    console.log(response, status, error);
+                    $('#errorMessageArea').show().find('#errorMessage').text(response.responseJSON.message);
+                });
+            }
+            return false;
+        });
+    </script>
+{{/partial}}
+{{> layout/base}}

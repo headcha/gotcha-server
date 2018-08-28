@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<!--[if IE 9]> <html lang="ko" class="ie9"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="ko" style="background-color: #f5f5f5">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <title>Gotchoa</title>
+    <meta name="description" content="Gotchoa">
+    <meta name="author" content="seolgi">
+    <!-- Mobile Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="images/favicon.ico">
+
+    {{> layout/css}}
+
+
+    <style>
+
+    </style>
+    <script>
+
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                    m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-85290341-2', 'auto');
+        ga('send', 'pageview');
+        ga('set', 'userId', getCookie('gotchoa-visitor-id')); // 로그인한 User-ID를 사용하여 User-ID를 설정합니다.
+
+        /**
+         * 쿠키값 추출
+         * @param cookieName 쿠키명
+         */
+        function getCookie(name){
+            name = new RegExp(name + '=([^;]*)');
+            return name.test(document.cookie) ? unescape(RegExp.$1) : '';
+        }
+    </script>
+    {{#block "header"}}{{/block}}
+
+</head>
+<!-- body classes:  -->
+<!-- "boxed": boxed layout mode e.g. <body class="boxed"> -->
+<!-- "pattern-1 ... pattern-9": background patterns for boxed layout mode e.g. <body class="boxed pattern-1"> -->
+<!-- "transparent-header": makes the header transparent and pulls the banner to top -->
+<!-- "gradient-background-header": applies gradient background to header -->
+<!-- "page-loader-1 ... page-loader-6": add a page loader to the page (more info @components-page-loaders.html) -->
+<body class="">
+<script>
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '1967694396776299',
+            cookie     : true,
+            xfbml      : true,
+            version    : 'v2.8'
+        });
+        FB.AppEvents.logPageView();
+    };
+
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+<!-- scrollToTop -->
+<!-- ================ -->
+<div class="scrollToTop circle"><i class="fa fa-angle-up"></i></div>
+
+<!-- page wrapper start -->
+<!-- ================ -->
+<div class="page-wrapper">
+    {{> layout/simple/header}}
+
+
+    {{#block "content"}}
+
+
+    {{/block}}
+
+</div>
+{{> layout/script}}
+
+{{#block "script"}}{{/block}}
+
+<script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script>
+<script type="text/javascript">
+    if(!wcs_add) var wcs_add = {};
+    wcs_add["wa"] = "98d72c2c8389c8";
+    wcs_do();
+</script>
+</body>
+</html>

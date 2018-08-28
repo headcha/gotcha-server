@@ -1,0 +1,61 @@
+<div class="comment clearfix js-comment-item" data-id="{{id}}">
+    {{#if removed}}
+        <div class="{{#equals writer.loginId loggedMember.loginId}} my-comment {{/equals}} comment-item" >
+            <header>
+                <div class="comment-meta"><strong>{{writer.loginId}} | {{dateFormat createdAt format='yyyy-MM-dd HH:mm'}}</strong></div>
+            </header>
+            <div class="comment-content">
+                <div class="comment-body clearfix ">
+                    <p class="comment-text">작성자가 삭제한 댓글 입니다. </p>
+                    <button class="btn btn-sm btn-gray pull-right js-reply" data-id="{{id}}"><i class="fa fa-reply"></i> 답글 {{replyCount}}</button>
+                </div>
+            </div>
+        </div>
+        <div class="reply-area-{{id}}" style="display: none;">
+            <div class="reply">
+                {{#each replies}}
+                    {{> camera/template/reply}}
+                {{/each}}
+            </div>
+        </div>
+    {{else}}
+        <div class="{{#equals writer.loginId loggedMember.loginId}} my-comment {{/equals}} comment-item" data-id="{{id}}">
+            <header>
+                {{#equals writer.loginId loggedMember.loginId}}
+                    <button class="btn btn-sm btn-gray-transparent pull-right js-comment-remove" data-id="{{id}}"><i class="fa fa-close"></i> 삭제 {{replycount}}</button>
+                {{/equals}}
+                <div class="comment-meta"><strong>{{writer.loginId}} | {{dateFormat createdAt format='yyyy-MM-dd HH:mm'}}</strong></div>
+            </header>
+            <div class="comment-content">
+                <div class="comment-body clearfix ">
+
+                    <p class="comment-text">{{messages}} </p>
+                    <button class="btn btn-sm btn-gray pull-right js-reply" data-id="{{id}}"><i class="fa fa-reply"></i> 답글 {{replyCount}}</button>
+                </div>
+            </div>
+        </div>
+        <div class="reply-area-{{id}}" style="display: none;">
+            <div class="comment clearfix js-comment-form">
+                <form data-toggle="validator" role="form" class="reply-form" data-id="{{id}}" action="/api/v1/members/cameras/{{camera.id}}/comments/{{id}}/reply" method="post">
+                    <div class="form-group has-feedback">
+                        <textarea class="form-control" rows="8"  name="message" placeholder="근거 없는 비방은 고소 먹음" required></textarea>
+                        <i class="fa fa-comment-o form-control-feedback"></i>
+                        <div class="help-block with-errors text-danger"></div>
+                    </div>
+                    <div class="text-right">
+                        <input type="submit" value="등록" class="btn btn-default">
+                    </div>
+
+                </form>
+                <div class="separator"></div>
+            </div>
+
+            <div class="reply">
+                {{#each replies}}
+                    {{> camera/template/reply}}
+                {{/each}}
+            </div>
+        </div>
+
+    {{/if}}
+</div>

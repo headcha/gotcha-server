@@ -1,0 +1,22 @@
+{
+  "name": "congchoo",
+  "version": "1.0.0",
+  "description": "js build",
+  "main": "app.js",
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "^1.0.3",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-cssmin": "^2.2.1",
+    "grunt-contrib-uglify": "^3.1.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://mkk.iptime.org:9000/seolgi/congchoo.git"
+  },
+  "author": "headcha@naver.com",
+  "license": "ISC"
+}

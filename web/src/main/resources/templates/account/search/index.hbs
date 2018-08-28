@@ -1,0 +1,73 @@
+{{#partial "content"}}
+
+    <div class="fullpage-site-no-nav">
+
+        <!-- section start -->
+        <!-- ================ -->
+        <section id="section-1" class="section dark-translucent-bg" style="background-image: url('/display/image/home/banner-wedding-2.jpg');">
+            <div class="container">
+                <div class="row">
+                    <!-- main start -->
+                    <!-- ================ -->
+                    <div class="main object-non-visible" data-animation-effect="fadeInUpSmall" data-effect-delay="100">
+                        <div class="form-block border-clear col-md-6">
+                            <h2 class="title text-center">ID 찾기</h2>
+                            <form class="form-horizontal"  role="form" action="/api/account/search/id"
+                                  method="post">
+                                <div class="form-group has-feedback">
+                                    <div class="col-sm-offset-1 col-sm-4">
+                                        <input type="email" class="form-control" id="email" name="email"
+                                               placeholder="e-mail" required>
+                                        <i class="fa fa-pencil form-control-feedback"></i>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="tel" class="form-control" id="name" name="name" placeholder="이름"
+                                               required>
+                                        <i class="fa fa-phone form-control-feedback"></i>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="col-sm-offset-1 col-sm-10">
+                                        <button class="btn btn-group btn-default btn-animated col-sm-12">찾기 <i
+                                                class="fa fa-check"></i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="form-block  border-clear col-md-6">
+                            <h2 class="title text-center">비밀번호 찾기.</h2>
+                            <form class="form-horizontal"  role="form" action="/api/account/reset/password/request" method="post">
+                                <div class="form-group has-feedback">
+                                    <div class="col-sm-offset-1 col-sm-4">
+                                        <input class="form-control" id="name" name="name" placeholder="이름" required>
+                                        <i class="fa fa-pencil form-control-feedback"></i>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="email" class="form-control" id="id" name="id" placeholder="이메일 ( 아이디 )" required>
+                                        <i class="fa fa-envelope form-control-feedback"></i>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="col-sm-offset-1 col-sm-10">
+                                        <button type="submit" class="btn btn-group btn-default btn-animated col-sm-12">찾기 <i class="fa fa-check"></i></button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </section>
+        <!-- section end -->
+    </div>
+{{/partial}}
+
+{{> layout/base}}

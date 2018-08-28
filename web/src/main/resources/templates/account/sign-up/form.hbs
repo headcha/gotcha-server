@@ -1,0 +1,120 @@
+{{#partial "header"}}
+    <style>
+        .help-block.with-errors {
+            margin-top: 10px;
+            color: red;
+        }
+    </style>
+{{/partial}}
+{{#partial "content"}}
+<!-- main-container start -->
+<!-- ================ -->
+
+<!-- header-container end -->
+<!-- breadcrumb start -->
+<!-- ================ -->
+<div class="breadcrumb-container">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><i class="fa fa-home pr-2"></i><a class="link-dark" href="/">Home</a></li>
+            <li class="breadcrumb-item active">회원가입</li>
+        </ol>
+    </div>
+</div>
+<!-- breadcrumb end -->
+
+<div class="main-container dark-translucent-bg" style="background-image:url('/images/background-img-6.jpg');">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <!-- main start -->
+                <!-- ================ -->
+                <div class="main object-non-visible" data-animation-effect="fadeInUpSmall" data-effect-delay="100">
+                    <div class="form-block p-30 light-gray-bg border-clear">
+                        <h2 class="title">회원 가입</h2>
+
+                        <form class="form-horizontal memberForm " role="form" method="post" action="/api/v1/account/signup">
+
+                            <div class="form-group has-feedback row">
+                                <label for="loginId" class="col-md-3 control-label text-md-right col-form-label">ID <span class="text-danger small">*</span></label>
+                                <div class="col-md-8">
+                                    <input type="email" class="form-control" id="loginId" name="id" placeholder="id" pattern="^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$" data-error="이메일 형식으로 입력해주세요" required>
+                                    <i class="fa fa-envelope form-control-feedback pr-4"></i>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+                            <div class="form-group has-feedback row">
+                                <label for="inputPassword" class="col-md-3 control-label text-md-right col-form-label">비밀번호 <span class="text-danger small">*</span></label>
+                                <div class="col-md-8 ">
+                                    <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Password" data-error="비밀번호를 입력해주세요." data-minlength="8" data-minlength-error="8자 이상 입력해주세요." required>
+                                    <i class="fa fa-lock form-control-feedback pr-4"></i>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+                            <div class="form-group has-feedback row">
+                                <label for="matchPassword" class="col-md-3 control-label text-md-right col-form-label">비밀번호 확인<span class="text-danger small">*</span></label>
+                                <div class="col-md-8">
+                                    <input type="password" class="form-control" data-match="#inputPassword" id="matchPassword" placeholder="비밀번호 확인" data-match-error="비밀번호를 확인해주세요." data-minlength="8" data-minlength-error="8자 이상 입력해주세요." data-error="비밀번호를 입력해주세요." required>
+                                    <i class="fa fa-check form-control-feedback pr-4"></i>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                            </div>
+                            <div class="form-group has-feedback row">
+                                <label for="matchPassword" class="col-md-3 control-label text-md-right col-form-label"></label>
+                                <div class="col-md-8">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="confirm" value="true" required data-error="이용약관에 동의해 주세요.">
+                                            <a href="/policy/terms">서비스 이용약관 </a> 과 <a href="/policy/privacy">개인정보 처리 방침</a> 에 동의 합니다.
+                                            <div class="help-block with-errors"></div>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <label for="matchPassword" class="col-md-3 control-label text-md-right col-form-label"></label>
+                                <div class="col-md-8" id="errorMessageArea">
+                                    <strong id="errorMessage" class="text-danger">
+
+                                    </strong>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group row">
+                                <div class="ml-md-auto col-md-9">
+                                    <button type="submit" class="btn btn-group btn-default">가입 </button>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+                <!-- main end -->
+            </div>
+        </div>
+    </div>
+</div>
+
+{{/partial}}
+{{#partial "script"}}
+
+<script type="text/javascript">
+    $('.memberForm').validator().on('submit', function (event) {
+
+        if (event.isDefaultPrevented() == false) {
+            var $this = $(this);
+            FormAjaxHandler.sendResult($this, function () {
+                location.href = "/" ;
+            }, function (response) {
+                $('#errorMessageArea').show().find('#errorMessage').text(response.responseJSON.message);
+            });
+        }
+        return false;
+    });
+
+
+</script>
+{{/partial}}
+{{> layout/base}}
