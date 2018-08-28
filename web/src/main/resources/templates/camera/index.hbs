@@ -68,7 +68,7 @@
                                     <div class="feature-box text-danger" id="js-right" style="cursor: pointer;">
                                         <span class="icon without-bg "><i class="fa fa-camera"></i></span>
                                         <h3 class="text-danger">몰카에요</h3>
-                                        <span class="counter">{{camera.rightCount}}</span>
+                                        <span id="right-count" class="counter {{#if camera.vote}}vote{{/if}}">{{camera.rightCount}}</span>
                                     </div>
                                 </div>
                                 <div class="col-4  text-center">
@@ -387,6 +387,17 @@
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=xWkLu4_X012vIBRy07ZD"></script>
 
     <script>
+
+        var $rightCount = $('#right-count');
+
+        $('#js-right').on('click' , function () {
+
+
+            AjaxHandler.postResult('/api/v1/members/cameras/{{camera.id}}/votes/right' , null , function (result) {
+                $rightCount.text(result.totalCount);
+            });
+        });
+
 
         $(document).on('click' , '.js-comment-remove' , function () {
             var fnConfirm = confirm('게시글을 삭제 하시겠습니까?');

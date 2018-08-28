@@ -29,11 +29,7 @@ public class VoteApiController extends AbstractCameraApiController {
         cameraVoteService.vote(camera , member , Candidate.RIGHT);
     }
 
-    @PostMapping("/right/cancel")
-    public void cancelRight(@PathVariable long cameraId ,   Member member) {
-        Camera camera = getCamera(cameraId);
-        cameraVoteService.cancel(camera  , member ,Candidate.RIGHT);
-    }
+
 
     @PostMapping("/wrong")
     public void wrong(@PathVariable long cameraId ,   Member member) {
@@ -41,9 +37,4 @@ public class VoteApiController extends AbstractCameraApiController {
         cameraVoteService.vote(camera ,   member, Candidate.WRONG);
     }
 
-    @PostMapping("/wrong/cancel")
-    public void cancelWrong(@PathVariable long cameraId ,   Member member) {
-        Camera camera = getCamera(cameraId);
-        cameraVoteService.cancel(camera ,   member, Candidate.WRONG);
-    }
 }

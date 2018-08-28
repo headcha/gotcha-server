@@ -7,6 +7,8 @@ import com.seolgi.detector.domain.camera.Camera;
 import com.seolgi.detector.domain.camera.CameraService;
 import com.seolgi.detector.domain.camera.comment.CameraComment;
 import com.seolgi.detector.domain.camera.comment.CameraCommentService;
+import com.seolgi.detector.domain.camera.vote.CameraVoteService;
+import com.seolgi.detector.domain.member.Member;
 import com.seolgi.detector.domain.utils.converter.PageConverter;
 import com.seolgi.detector.domain.utils.converter.PageDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,15 +30,29 @@ public class CameraController {
     @Autowired
     private CameraCommentService cameraCommentService;
 
+    @Autowired
+    private CameraVoteService cameraVoteService;
+
     @GetMapping
-    public String index(@PathVariable long id , Model model) {
+    public String index(@PathVariable long id , Model model , Member member) {
 
         Camera one = cameraService.findOne(id);
         Page<CameraComment> commentPage = cameraCommentService.get(id, PageableFactory.create(1, 20));
 
+
+        boolean voteRight = false;
+
+        if (member != null)
+            voteRight = cameraVoteService.existsRightByMember(member.getId());
+
+        boolean voteWrong = false;
+
+        if (member != null)
+            voteRight = cameraVoteService.existsWrongByMember(member.getId());
+
         PageDto<CommentDto> commentDtoPage = PageConverter.convert(commentPage, CommentDto.class);
 
-        model.addAttribute("camera" , new DisplayCamera(one , commentDtoPage));
+        model.addAttribute("camera" , new DisplayCamera(one , commentDtoPage , voteRight , voteWrong));
         return "camera/index";
     }
 }

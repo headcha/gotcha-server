@@ -25,9 +25,11 @@ public class DisplayCamera {
     private int commentCount;
     private int rightCount;
     private int wrongCount;
+    private boolean rightVote;
+    private boolean voteWrong;
     private PageDto<CommentDto> comments;
 
-    public DisplayCamera(Camera camera , PageDto<CommentDto> comments) {
+    public DisplayCamera(Camera camera, PageDto<CommentDto> comments, boolean rightVote, boolean voteWrong) {
         this.id = camera.getId();
         this.imageUrl = camera.getImage().getUrl();
         this.message = camera.getMessage();

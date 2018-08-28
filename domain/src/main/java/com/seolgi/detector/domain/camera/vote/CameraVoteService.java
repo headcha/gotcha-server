@@ -24,15 +24,31 @@ public class CameraVoteService extends BaseService<CameraVote, Long> {
     }
 
     public void vote(Camera camera, Member member, Candidate candidate) {
-        Optional<CameraVote> one = cameraVoteRepository.findOne(camera.getId(), member.getId(), candidate);
+        CameraVote one = cameraVoteRepository.findOne(camera.getId(), member.getId(), candidate);
 
-        if (one.isPresent() == false)
+        if (one == null) {
             super.save(CameraVote.builder().camera(camera).candidate(candidate).member(member).build());
-
+        } else {
+            super.delete(one);
+        }
     }
 
-    public void cancel(Camera camera, Member member, Candidate candidate) {
-        Optional<CameraVote> one = cameraVoteRepository.findOne(camera.getId(), member.getId(), candidate);
-        one.ifPresent(CameraVote::disable);
+
+
+    public long countRightByCamera(long cameraId) {
+        return cameraVoteRepository.countByCandidateAndCameraId(Candidate.RIGHT , cameraId);
+    }
+
+
+    public long countWrongByCamera(long cameraId) {
+        return cameraVoteRepository.countByCandidateAndCameraId(Candidate.WRONG , cameraId);
+    }
+
+    public boolean existsRightByMember(long memberId) {
+        return cameraVoteRepository.existsByCandidateAndMemberId(Candidate.RIGHT , memberId);
+    }
+
+    public boolean existsWrongByMember(long memberId) {
+        return cameraVoteRepository.existsByCandidateAndMemberId(Candidate.WRONG , memberId);
     }
 }
